@@ -29,16 +29,16 @@ function updateTextInput(val) {
         case '0':
             document.getElementById('rangeDisplay').value="Fucking Fast";
             break;
-        case '5':
+        case '10':
             document.getElementById('rangeDisplay').value="Fast";
             break;
-        case '10':
+        case '20':
             document.getElementById('rangeDisplay').value="Standard";
             break;
-        case '15':
+        case '30':
             document.getElementById('rangeDisplay').value="Slow";
             break;
-        case '20':
+        case '40':
             document.getElementById('rangeDisplay').value="Fucking Slow";
             break;
     }

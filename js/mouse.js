@@ -2,14 +2,16 @@ function mouseSpeed(event) {
     var rolled = 0; // sensitivity adjustment
 
     if('wheelDelta' in event) {
-        rolled = event.wheelDelta / 50; // all except firefox
+        rolled = event.wheelDelta / 30; // all except firefox
     } else {
         //firefox
-        rolled = 40 * event.detail / 50;
+        rolled = 40 * event.detail / 30;
     }
 
-    document.getElementById("rangeInput").value -= rolled;
-    updateTextInput(document.getElementById("rangeInput").value);
+    popupWindow.scrollBy(0,rolled);
+
+    // document.getElementById("rangeInput").value -= rolled;
+    // updateTextInput(document.getElementById("rangeInput").value);
 }
 
 function initMouse() {

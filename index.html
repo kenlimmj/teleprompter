@@ -9,14 +9,14 @@
         <link rel="stylesheet" href="css/style.css">
         <script src="js/mouse.js"></script>
     </head>
-    <body onload = "initMouse();">
+    <body>
     <div class="control">
         <p class="text-center menu-title">Teleprompter Screen</p>
         <div id="prompt" class="roboto" unselectable='on' onselectstart='return false;' onmousedown='return false;'></div>
 
         <fieldset>
         <p class="text-center menu-title">Scrolling Speed</p>
-        <input type="range" id="rangeInput" name="rangeInput" min="0" max="40" value="20" step="1" onchange="updateTextInput(this.value);">
+        <input type="range" id="rangeInput" name="rangeInput" min="0" max="40" value="20" step="10" onchange="updateTextInput(this.value);">
         <input type="text" id="rangeDisplay" disabled value="Standard">
         </fieldset>
 
@@ -60,6 +60,7 @@
     <script src="js/preview.js"></script>
     <script src="js/storage.js"></script>
     <script>
+        // Configuration options for the markdown parser
         marked.setOptions({
           breaks: true,
           smartypants: true
@@ -67,6 +68,8 @@
 
         // Initialize variables
         var popupWindow = null;
+
+        initMouse();
 
         // An instance opens a popup window vertically and horizontally centered on the user's screen
         function teleprompter(url,winName,w,h,scroll){
@@ -78,7 +81,7 @@
             // Magic sauce to center the popup in the middle of the screen
             LeftPosition = (screen.width) ? (screen.width-w)/2 : 0;
             TopPosition = (screen.height) ? (screen.height-h)/2 : 0;
-            settings = 'height='+h+',width='+w+',top='+TopPosition+',left='+LeftPosition+',scrollbars='+scroll+',resizable=yes,toolbar=0,status=0,menubar=0,scrollbars=0,location=0';
+            settings = 'height='+h+',width='+w+',top='+TopPosition+',left='+LeftPosition+',scrollbars='+scroll+',resizable=yes,toolbar=0,status=0,menubar=0,location=0';
 
             // Make damn fucking sure all the LaTeX equations are typeset properly
             MathJax.Hub.Typeset();

@@ -294,12 +294,12 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 #prompterWindow {
-  background-color: #002b36;
+  background-color: #444;
 }
 
 #screen {
   line-height: 2;
-  color: #839496;
+  color: #fff;
   margin: 0 auto;
   padding-top: 50vh;
   padding-bottom: 100vh;

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Teleprompter</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body>
+    <div class="control">
+        <p class="text-center menu-title">Teleprompter Screen</p>
+        <div id="prompt" class="roboto" unselectable='on' onselectstart='return false;' onmousedown='return false;'></div>
+
+        <fieldset>
+        <p class="text-center menu-title">Scrolling Speed</p>
+        <input type="range" name="rangeInput" min="0" max="20" value="10" step="5" onchange="updateTextInput(this.value);">
+        <input type="text" id="rangeDisplay" disabled value="Standard">
+        </fieldset>
+
+        <p class="text-center menu-title">Orientation</p>
+        <fieldset>
+        <input type="radio" name="flip" id="flip-none" value="flip-none" checked="checked" onclick="removeClass(document.getElementById('prompt'),'flip-horizontal'); removeClass(document.getElementById('prompt'),'flip-vertical'); removeClass(document.getElementById('prompt'),'flip-mirror');"><label for="flip-none">None</label><br/>
+
+        <input type="radio" name="flip" id="flip-horizontal" value="flip-horizontal" onclick="addClass(document.getElementById('prompt'),'flip-horizontal'); addClass(popupWindow.document.getElementById('screen'),'flip-horizontal');"><label for="flip-horizontal">Flip Horizontal</label><br/>
+
+        <input type="radio" name="flip" id="flip-vertical" value="flip-vertical" onclick="addClass(document.getElementById('prompt'),'flip-vertical'); addClass(popupWindow.document.getElementById('screen'),'flip-vertical');"><label for="flip-vertical">Flip Vertical</label><br/>
+
+        <input type="radio" name="flip" id="flip-mirror" value="flip-mirror" onclick="addClass(document.getElementById('prompt'),'flip-mirror'); addClass(popupWindow.document.getElementById('screen'),'flip-mirror');"><label for="flip-mirror">Flip Mirror</label>
+        </fieldset>
+
+        <p><a href="#" onclick="teleprompter(this.href,'Prompting Screen',screen.width,screen.height,'no'); return false;">Open/Update Prompting Window</a></p>
+        <p><a href="#" onclick="startScroll(document.getElementById('rangeDisplay').value);">Start Scrolling</a></p>
+        <p><a href="#" onclick="stopScroll();">Stop Scrolling</a></p>
+    </div>
+    <div class="editor">
+        <textarea id="text-input" class="sourcecodepro" placeholder="Paste Markdown-formatted Text here"></textarea>
+        <div id="preview" class="roboto" unselectable='on' onselectstart='return false;' onmousedown='return false;'></div>
+    </div>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            extensions: ["tex2jax.js"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+            TeX: {extensions:["mhchem.js"]},
+            tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true
+            },
+            "HTML-CSS": { availableFonts: ["TeX"] }
+        });
+    </script>
+    <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="js/marked.js"></script>
+    <script src="js/classFunctions.js"></script>
+    <script src="js/scroller.js"></script>
+    <script src="js/parser.js"></script>
+    <script src="js/preview.js"></script>
+    <script src="js/storage.js"></script>
+    <script>
+        marked.setOptions({
+          breaks: true,
+          smartypants: true
+        });
+
+        // Initialize variables
+        var popupWindow = null;
+
+        // An instance opens a popup window vertically and horizontally centered on the user's screen
+        function teleprompter(url,winName,w,h,scroll){
+            // Check if any popups are currently open and close them all.
+            document.MyActiveWindows= new Array;
+            for(var i = 0;i < document.MyActiveWindows.length; i++)
+            document.MyActiveWindows[i].close()
+
+            // Magic sauce to center the popup in the middle of the screen
+            LeftPosition = (screen.width) ? (screen.width-w)/2 : 0;
+            TopPosition = (screen.height) ? (screen.height-h)/2 : 0;
+            settings = 'height='+h+',width='+w+',top='+TopPosition+',left='+LeftPosition+',scrollbars='+scroll+',resizable=yes,toolbar=0,status=0,menubar=0,scrollbars=0,location=0';
+
+            // Make damn fucking sure all the LaTeX equations are typeset properly
+            MathJax.Hub.Typeset();
+
+            // Open the window with our desired settings
+            popupWindow = window.open(url,winName,settings);
+
+            // Initialize a handle to the popupWindow for brevity
+            var prompterWindow = popupWindow.document;
+
+            // Retrieve the rendered contents to be displayed on the teleprompter
+            var script = document.getElementById("prompt");
+
+            // Write a motherload of stuff to the popup window one line at a time
+            prompterWindow.write('<!DOCTYPE html>');
+            prompterWindow.write('<head>');
+            prompterWindow.write('<title>Prompting Screen</title>');
+            prompterWindow.write('<link rel="stylesheet" href="css/style.css">');
+            prompterWindow.write('</head>');
+            prompterWindow.write('<body id="prompterWindow">');
+            prompterWindow.write('<div id="screen" class="roboto">');
+            prompterWindow.write(script.innerHTML);
+            prompterWindow.write('</div>');
+            prompterWindow.write('</body>');
+            prompterWindow.close();
+        }
+
+        // Clean-up after ourselves by closing the popup when the parent tab/window is closed
+        window.onunload = function() {
+            if (popupWindow && !popupWindow.closed) {
+                popupWindow.close();
+            }
+        };
+    </script>
+    </body>
+</html>

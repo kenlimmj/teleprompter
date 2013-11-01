@@ -206,7 +206,7 @@ fieldset {
   cursor: default;
 }
 
-.flip-horizontal > * > span.flip, .flip-horizontal > * > .MathJax_Display, .flip-horizontal > * > .MathJax {
+.flip-horizontal > *  {
   display: inline-block;
   -webkit-transform: matrix(-1, 0, 0, 1, 0, 0) !important;
      -moz-transform: matrix(-1, 0, 0, 1, 0, 0) !important;

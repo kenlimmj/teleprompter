@@ -22,16 +22,13 @@
 
         <p class="text-center menu-title">Orientation</p>
         <fieldset>
-        <input type="radio" name="flip" id="flip-none" value="flip-none" checked="checked" onclick="removeClass(document.getElementById('prompt'),'flip-horizontal'); removeClass(document.getElementById('prompt'),'flip-vertical'); removeClass(document.getElementById('prompt'),'flip-mirror');"><label for="flip-none">None</label><br/>
-
-        <input type="radio" name="flip" id="flip-horizontal" value="flip-horizontal" onclick="addClass(document.getElementById('prompt'),'flip-horizontal'); addClass(popupWindow.document.getElementById('screen'),'flip-horizontal');"><label for="flip-horizontal">Flip Horizontal</label><br/>
-
-        <input type="radio" name="flip" id="flip-vertical" value="flip-vertical" onclick="addClass(document.getElementById('prompt'),'flip-vertical'); addClass(popupWindow.document.getElementById('screen'),'flip-vertical');"><label for="flip-vertical">Flip Vertical</label><br/>
-
-        <input type="radio" name="flip" id="flip-mirror" value="flip-mirror" onclick="addClass(document.getElementById('prompt'),'flip-mirror'); addClass(popupWindow.document.getElementById('screen'),'flip-mirror');"><label for="flip-mirror">Flip Mirror</label>
+        <input type="radio" name="flip" id="flipReset" checked="checked" onclick="flipReset();"><label for="flip-none">None</label><br/>
+        <input type="radio" name="flip" id="flipHorz" onclick="flipHorz();"><label for="flip-horizontal">Flip Horizontal</label><br/>
+        <input type="radio" name="flip" id="flipVert" onclick="flipVert();"><label for="flip-vertical">Flip Vertical</label><br/>
+        <input type="radio" name="flip" id="flipMirror" onclick="flipMirror();"><label for="flip-mirror">Flip Mirror</label>
         </fieldset>
 
-        <p><a href="#" onclick="teleprompter(this.href,'Prompting Screen',screen.width,screen.height,'no'); return false;">Open/Update Prompting Window</a></p>
+        <p><a href="#" onclick="teleprompter(this.href); return false;">Open/Update Prompting Window</a></p>
         <p><a href="#" onclick="startScroll(document.getElementById('rangeInput').value);">Start Scrolling</a></p>
         <p><a href="#" onclick="stopScroll();">Stop Scrolling</a></p>
     </div>
@@ -69,10 +66,11 @@
         // Initialize variables
         var popupWindow = null;
 
+        // Initialize the mouse-scroll event listener
         initMouse();
 
         // An instance opens a popup window vertically and horizontally centered on the user's screen
-        function teleprompter(url,winName,w,h,scroll){
+        function teleprompter(url){
             // Check if any popups are currently open and close them all.
             document.MyActiveWindows= new Array;
             for(var i = 0;i < document.MyActiveWindows.length; i++)
@@ -81,13 +79,13 @@
             // Magic sauce to center the popup in the middle of the screen
             LeftPosition = (screen.width) ? (screen.width-w)/2 : 0;
             TopPosition = (screen.height) ? (screen.height-h)/2 : 0;
-            settings = 'height='+h+',width='+w+',top='+TopPosition+',left='+LeftPosition+',scrollbars='+scroll+',resizable=yes,toolbar=0,status=0,menubar=0,location=0';
+            settings = 'height='+screen.height+',width='+screen.width+',top='+TopPosition+',left='+LeftPosition+',resizable=yes,toolbar=0,status=0,menubar=0,location=0';
 
             // Make damn fucking sure all the LaTeX equations are typeset properly
             MathJax.Hub.Typeset();
 
             // Open the window with our desired settings
-            popupWindow = window.open(url,winName,settings);
+            popupWindow = window.open(url,'Prompting Window',settings);
 
             // Initialize a handle to the popupWindow for brevity
             var prompterWindow = popupWindow.document;

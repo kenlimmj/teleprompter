@@ -52,7 +52,7 @@ function updateTextInput(val) {
     }
 }
 
-// An instance synchronized the scroll locations of the two input text-areas
+// An instance synchronizes the scroll locations of the two input text-areas
 function syncTextAreas (textarea1, textarea2) {
   textarea1.onscroll = function (evt) {
     textarea2.scrollTop = this.scrollTop;

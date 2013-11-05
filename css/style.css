@@ -15,16 +15,19 @@
 .roboto {
   font-family: 'RobotoSlab';
 
+  text-rendering: optimizeLegibility;
+
   -webkit-font-smoothing: antialiased;
   -ms-font-smoothing:     antialiased;
   -o-font-smoothing:      antialiased;
   font-smoothing:         antialiased;
 
-  -moz-font-feature-settings:     "liga=1, dlig=1";
-  -ms-font-feature-settings:      "liga", "dlig";
-  -webkit-font-feature-settings:  "liga", "dlig";
-  -o-font-feature-settings:       "liga", "dlig";
-  font-feature-settings:          "liga", "dlig";
+  -moz-font-feature-settings:"lnum" 1, "frac" 1, "zero" 1, "nalt" 1, "kern" 1, "liga" 1, "dlig" 1, "hlig" 1, "clig" 1;
+  -moz-font-feature-settings:"lnum=1, frac=1, zero=1, nalt=1, kern=1, liga=1, dlig=1, hlig=1, clig=1";
+  -ms-font-feature-settings:"lnum" 1, "frac" 1, "zero" 1, "nalt" 1, "kern" 1, "liga" 1, "dlig" 1, "hlig" 1, "clig" 1;
+  -o-font-feature-settings:"lnum" 1, "frac" 1, "zero" 1, "nalt" 1, "kern" 1, "liga" 1, "dlig" 1, "hlig" 1, "clig" 1;
+  -webkit-font-feature-settings:"lnum" 1, "frac" 1, "zero" 1, "nalt" 1, "kern" 1, "liga" 1, "dlig" 1, "hlig" 1, "clig" 1;
+  font-feature-settings:"lnum" 1, "frac" 1, "zero" 1, "nalt" 1, "kern" 1, "liga" 1, "dlig" 1, "hlig" 1, "clig" 1;
 
   font-size-adjust: auto;
 }
@@ -41,11 +44,17 @@
 
   text-rendering: optimizeLegibility;
 
-  -moz-font-feature-settings:     "liga=1, dlig=1";
-  -ms-font-feature-settings:      "liga", "dlig";
-  -webkit-font-feature-settings:  "liga", "dlig";
-  -o-font-feature-settings:       "liga", "dlig";
-  font-feature-settings:          "liga", "dlig";
+  -webkit-font-smoothing: antialiased;
+  -ms-font-smoothing:     antialiased;
+  -o-font-smoothing:      antialiased;
+  font-smoothing:         antialiased;
+
+  -moz-font-feature-settings:"lnum" 1, "frac" 1, "zero" 1, "nalt" 1, "kern" 1, "liga" 1, "dlig" 1, "hlig" 1, "clig" 1;
+  -moz-font-feature-settings:"lnum=1, frac=1, zero=1, nalt=1, kern=1, liga=1, dlig=1, hlig=1, clig=1";
+  -ms-font-feature-settings:"lnum" 1, "frac" 1, "zero" 1, "nalt" 1, "kern" 1, "liga" 1, "dlig" 1, "hlig" 1, "clig" 1;
+  -o-font-feature-settings:"lnum" 1, "frac" 1, "zero" 1, "nalt" 1, "kern" 1, "liga" 1, "dlig" 1, "hlig" 1, "clig" 1;
+  -webkit-font-feature-settings:"lnum" 1, "frac" 1, "zero" 1, "nalt" 1, "kern" 1, "liga" 1, "dlig" 1, "hlig" 1, "clig" 1;
+  font-feature-settings:"lnum" 1, "frac" 1, "zero" 1, "nalt" 1, "kern" 1, "liga" 1, "dlig" 1, "hlig" 1, "clig" 1;
 
   font-size-adjust: auto;
 }
@@ -103,6 +112,7 @@ fieldset {
   background-color: #fdf6e3;
 }
 
+/* Focus states for the textarea placeholder - basically the fade-in/out eye candy */
 [placeholder]::-webkit-input-placeholder {
   text-align: center;
   padding-top: 20vh;
@@ -139,6 +149,7 @@ fieldset {
   opacity: 0.2;
 }
 
+/* Layout for the main window. "control" is the left control panel, and "editor" is the right text input panel */
 .control, .editor {
   display: inline-block;
   float: left;
@@ -160,13 +171,11 @@ fieldset {
   background-color: #444;
 }
 
-#prompt {
-  padding-left: 2.5rem;
-  padding-right: 2.5rem;
+#promptPreviewWrapper {
   min-height: 10vh;
   height: 20vh;
   border: 2px solid #444;
-  overflow: hidden;
+  overflow: scroll;
   resize: vertical;
   font-size: 0.75rem;
 
@@ -176,8 +185,12 @@ fieldset {
   user-select:none;
   cursor: default;
 
-  color: #839496;
-  background-color: #002b36;
+  color: #fff;
+  background-color: #444;
+}
+
+#prompt {
+  margin: 0 auto;
 }
 
 #previewText {
@@ -206,6 +219,10 @@ fieldset {
   cursor: default;
 }
 
+/* Classes to flip text in a number of ways. We use matrix transforms instead of scaleX/scaleY for speed
+   Note: We flip whole elements horizontally because it does not affect top-to-bottom order. To correctly flip
+   verically, we use JS to parse the DOM and add span classes to every legal word, where a legal word is a word,
+   word+punctuation or word+punctuation+word. We then vertically flip every span class. */
 .flip-horizontal > *  {
   display: inline-block;
   -webkit-transform: matrix(-1, 0, 0, 1, 0, 0) !important;
@@ -230,6 +247,7 @@ fieldset {
            transform: matrix(-1, 0, 0, -1, 0, 0) !important;
 }
 
+/* Classes to format the speed control, which is really a range element */
 input[type="range"] {
   width: 100%;
 
@@ -258,7 +276,7 @@ input[type="range"]::-webkit-slider-thumb {
   height: 1.618rem;
 }
 
-#rangeDisplay {
+#speedDisplay, #widthDisplay {
   outline: none;
   background: none;
   -webkit-appearance: none;
@@ -288,14 +306,10 @@ input[type="range"]::-webkit-slider-thumb {
   margin-top: 4rem;
 }
 
-.hidden {
-  display: none !important;
-  visibility: none !important;
-}
-
 #prompterWindow {
   background-color: #444;
   overflow-y: scroll;
+  width: 100vw;
 }
 
 #screen {
@@ -313,22 +327,50 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 @media (max-width: 767px) {
-  #screen {
-    font-size: 2rem;
-    width: 90vw;
+  #prompterWindow {
+    font-size: 1.5rem;
   }
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
-  #screen {
-    font-size: 3rem;
-    width: 80vw;
+  #prompterWindow {
+    font-size: 2rem;
   }
 }
 
 @media (min-width: 1025px) {
-  #screen {
-    font-size: 4rem;
-    width: 70vw;
+  #prompterWindow {
+    font-size: 2.5rem;
   }
+}
+
+img {
+  height: 2rem;
+  width: 2rem;
+}
+
+/* Classes to format the flip buttons, which is really a set of radio buttons */
+input[type="radio"] {
+  outline: none;
+  background: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  border: 0 none white;
+  border-radius: 0;
+
+  display: none;
+}
+
+label {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+
+  float: left;
+  display: inline-block;
+  width: 25%%;
+  text-align: center;
+
+  cursor: pointer;
 }

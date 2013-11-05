@@ -7,29 +7,36 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/style.css">
-        <script src="js/mouse.js"></script>
     </head>
     <body>
     <div class="control">
         <p class="text-center menu-title">Teleprompter Screen</p>
-        <div id="prompt" class="roboto" unselectable='on' onselectstart='return false;' onmousedown='return false;'></div>
+        <div id="promptPreviewWrapper">
+            <div id="prompt" class="roboto" unselectable='on' onselectstart='return false;' onmousedown='return false;'></div>
+        </div>
 
         <fieldset>
         <p class="text-center menu-title">Scrolling Speed</p>
-        <input type="range" id="rangeInput" name="rangeInput" min="0" max="40" value="20" step="10" onchange="updateTextInput(this.value);">
-        <input type="text" id="rangeDisplay" disabled value="Standard">
+        <input type="range" id="speedInput" name="speedInput" min="0" max="40" value="20" step="10" onchange="updateSpeedInput(this.value);">
+        <input type="text" id="speedDisplay" disabled value="Standard">
         </fieldset>
 
-        <p class="text-center menu-title">Orientation</p>
         <fieldset>
-        <input type="radio" name="flip" id="flipReset" checked="checked" onclick="flipReset();"><label for="flip-none">None</label><br/>
-        <input type="radio" name="flip" id="flipHorz" onclick="flipHorz();"><label for="flip-horizontal">Flip Horizontal</label><br/>
-        <input type="radio" name="flip" id="flipVert" onclick="flipVert();"><label for="flip-vertical">Flip Vertical</label><br/>
-        <input type="radio" name="flip" id="flipMirror" onclick="flipMirror();"><label for="flip-mirror">Flip Mirror</label>
+        <p class="text-center menu-title">Text Width</p>
+        <input type="range" id="widthInput" name="widthInput" min="50" max="100" value="70" step="10" onchange="updateWidthInput(this.value);">
+        <input type="text" id="widthDisplay" disabled value="Standard">
+        </fieldset>
+
+        <p class="text-center menu-title">Screen Flip Control</p>
+        <fieldset>
+        <input type="radio" name="flip" id="flipReset" checked="checked" onclick="flipReset();"><label for="flipReset"><img src="img/flipReset.svg"></label>
+        <input type="radio" name="flip" id="flipHorz" onclick="flipHorz();"><label for="flipHorz"><img src="img/flipHorz.svg"></label>
+        <input type="radio" name="flip" id="flipVert" onclick="flipVert();"><label for="flipVert"><img src="img/flipVert.svg"></label>
+        <input type="radio" name="flip" id="flipMirror" onclick="flipMirror();"><label for="flipMirror"><img src="img/flipMirror.svg"></label>
         </fieldset>
 
         <p><a href="#" onclick="teleprompter(this.href); return false;">Open/Update Prompting Window</a></p>
-        <p><a href="#" onclick="startScroll(document.getElementById('rangeInput').value);">Start Scrolling</a></p>
+        <p><a href="#" onclick="startScroll(document.getElementById('speedInput').value);">Start Scrolling</a></p>
         <p><a href="#" onclick="stopScroll();">Stop Scrolling</a></p>
     </div>
     <div class="editor">
@@ -52,10 +59,13 @@
     <script src="js/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="js/marked.js"></script>
     <script src="js/classFunctions.js"></script>
+    <script src="js/mouse.js"></script>
     <script src="js/scroller.js"></script>
     <script src="js/parser.js"></script>
     <script src="js/preview.js"></script>
     <script src="js/storage.js"></script>
+    <script src="js/flip.js"></script>
+    <script src="js/width.js"></script>
     <script>
         // Configuration options for the markdown parser
         marked.setOptions({
@@ -77,8 +87,8 @@
             document.MyActiveWindows[i].close()
 
             // Magic sauce to center the popup in the middle of the screen
-            LeftPosition = (screen.width) ? (screen.width-w)/2 : 0;
-            TopPosition = (screen.height) ? (screen.height-h)/2 : 0;
+            LeftPosition = (screen.width) ? (screen.width)/2 : 0;
+            TopPosition = (screen.height) ? (screen.height)/2 : 0;
             settings = 'height='+screen.height+',width='+screen.width+',top='+TopPosition+',left='+LeftPosition+',resizable=yes,toolbar=0,status=0,menubar=0,location=0';
 
             // Make damn fucking sure all the LaTeX equations are typeset properly
@@ -105,6 +115,8 @@
             prompterWindow.write('</div>');
             prompterWindow.write('</body>');
             prompterWindow.close();
+
+            updateWidthInput(document.getElementById('widthInput').value);
         }
 
         // Clean-up after ourselves by closing the popup when the parent tab/window is closed

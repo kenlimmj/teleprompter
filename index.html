@@ -10,34 +10,38 @@
     </head>
     <body>
     <div class="control">
+        <fieldset class="misolight">
         <p class="text-center menu-title">Teleprompter Screen</p>
         <div id="promptPreviewWrapper">
             <div id="prompt" class="roboto" unselectable='on' onselectstart='return false;' onmousedown='return false;'></div>
         </div>
+        </fieldset>
 
-        <fieldset>
+        <fieldset class="misolight">
         <p class="text-center menu-title">Scrolling Speed</p>
         <input type="range" id="speedInput" name="speedInput" min="0" max="40" value="20" step="10" onchange="updateSpeedInput(this.value);">
         <input type="text" id="speedDisplay" disabled value="Standard">
         </fieldset>
 
-        <fieldset>
+        <fieldset class="misolight">
         <p class="text-center menu-title">Text Width</p>
         <input type="range" id="widthInput" name="widthInput" min="50" max="100" value="70" step="10" onchange="updateWidthInput(this.value);">
         <input type="text" id="widthDisplay" disabled value="Standard">
         </fieldset>
 
+        <fieldset class="misolight">
         <p class="text-center menu-title">Screen Flip Control</p>
-        <fieldset>
         <input type="radio" name="flip" id="flipReset" checked="checked" onclick="flipReset();"><label for="flipReset"><img src="img/flipReset.svg"></label>
         <input type="radio" name="flip" id="flipHorz" onclick="flipHorz();"><label for="flipHorz"><img src="img/flipHorz.svg"></label>
         <input type="radio" name="flip" id="flipVert" onclick="flipVert();"><label for="flipVert"><img src="img/flipVert.svg"></label>
         <input type="radio" name="flip" id="flipMirror" onclick="flipMirror();"><label for="flipMirror"><img src="img/flipMirror.svg"></label>
         </fieldset>
 
-        <p><a href="#" onclick="teleprompter(this.href); return false;">Open/Update Prompting Window</a></p>
+        <fieldset class="buttons misolight">
+        <p><a href="#" onclick="teleprompter(this.href); return false;">Open Prompting Window</a></p>
         <p><a href="#" onclick="startScroll(document.getElementById('speedInput').value);">Start Scrolling</a></p>
         <p><a href="#" onclick="stopScroll();">Stop Scrolling</a></p>
+        </fieldset>
     </div>
     <div class="editor">
         <textarea id="text-input" class="sourcecodepro" placeholder="Paste Markdown-formatted Text here"></textarea>
@@ -56,7 +60,7 @@
             "HTML-CSS": { availableFonts: ["TeX"] }
         });
     </script>
-    <script src="js/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="js/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="js/marked.js"></script>
     <script src="js/classFunctions.js"></script>
     <script src="js/mouse.js"></script>
@@ -78,6 +82,9 @@
 
         // Initialize the mouse-scroll event listener
         initMouse();
+
+        // Update the width of the prompter preview window
+        updateWidthInput(document.getElementById('widthInput').value);
 
         // An instance opens a popup window vertically and horizontally centered on the user's screen
         function teleprompter(url){

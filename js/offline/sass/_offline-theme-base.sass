@@ -1,0 +1,76 @@
+@import compass/css3
+@import compass/css3/user-interface
+
+.offline-ui, .offline-ui *, .offline-ui:before, .offline-ui:after, .offline-ui *:before, .offline-ui *:after
+    +box-sizing(border-box)
+
+.offline-ui
+    display: none
+    position: fixed
+    background: #fff
+    z-index: 800
+    margin: auto
+    top: 0
+    left: 0
+    right: 0
+
+    .offline-ui-content:before
+        display: inline
+
+    .offline-ui-retry
+        +user-select(none)
+        display: none
+
+        &:before
+            display: inline
+            content: "Reconnect"
+
+    &.offline-ui-up
+
+        .offline-ui-content:before
+            content: "Your computer is connected to the internet. "
+
+            @media (max-width: 1024px)
+                content: "Your device is connected to the internet. "
+
+            @media (max-width: 568px)
+                content: "Your device is connected. "
+
+        &.offline-ui-up-5s
+            display: block
+
+    &.offline-ui-down
+        display: block
+
+        .offline-ui-content:before
+            content: "Your computer lost its internet connection. "
+
+            @media (max-width: 1024px)
+                content: "Your device lost its internet connection. "
+
+            @media (max-width: 568px)
+                content: "Your device isn't connected. "
+
+        &.offline-ui-connecting, &.offline-ui-connecting-2s
+
+            .offline-ui-content:before
+                content: "Attempting to reconnect... "
+
+        &.offline-ui-waiting
+
+            .offline-ui-retry
+                display: block
+
+            .offline-ui-content:before
+                content: "Attempting to reconnect in " attr(data-retry-in) "... "
+
+                @media (max-width: 568px)
+                    content: "Connecting in " attr(data-retry-in-abbr) "... "
+
+        &.offline-ui-reconnect-failed-2s
+
+            &.offline-ui-waiting .offline-ui-retry
+                display: none
+
+            .offline-ui-content:before
+                content: "Connection attempt failed. "

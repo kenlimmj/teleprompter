@@ -26,6 +26,7 @@ function startScroll(speed) {
 // We use the inbuilt scrollBy function with a very small scroll interval (1px) to keep the scrolling smooth
 // Precondition: A popup window with handle "popupWindow" is open. The input argument "speed" must be a positive integer
 function pageScroll(speed) {
+    // Scroll the popup window by 1 pixel vertically
     popupWindow.scrollBy(0,1);
 
     // Calculate a scaling factor for the scroll to account for the different in size between the preview and prompting window
@@ -43,6 +44,15 @@ function stopScroll() {
     clearTimeout(scrolldelay);
 }
 
+// An instance checks to see if the window is scrolling and stops scrolling if it is. Otherwise it starts scrolling.
+// TODO: Find some way to replace scrolldelay for something we can use to detect if scrolling is happening
+function toggleScroll() {
+    // If there's no scroll delay set it means we're not scrolling, so we start the scroll
+    if (scrolldelay === 0) { startScroll(); }
+    // Otherwise, it means that we're currently scrolling, so we stop the scroll
+    else { stopScroll(); }
+}
+
 // An instance updates the range display textbox with a textual representation of the range value
 // Displays text ranging from "Fucking Fast", "Fast", "Standard", "Slow", and "Fucking Slow" depending on the scroll speed
 // If the value is one we've accounted for, falls back by displaying the value itself
@@ -50,22 +60,22 @@ function stopScroll() {
 function updateSpeedInput(val) {
     switch(val) {
         case '0':
-            document.getElementById('rangeDisplay').value="Fucking Fast";
+            document.getElementById('speedDisplay').value="Fucking Fast";
             break;
         case '10':
-            document.getElementById('rangeDisplay').value="Fast";
+            document.getElementById('speedDisplay').value="Fast";
             break;
         case '20':
-            document.getElementById('rangeDisplay').value="Standard";
+            document.getElementById('speedDisplay').value="Standard";
             break;
         case '30':
-            document.getElementById('rangeDisplay').value="Slow";
+            document.getElementById('speedDisplay').value="Slow";
             break;
         case '40':
-            document.getElementById('rangeDisplay').value="Fucking Slow";
+            document.getElementById('speedDisplay').value="Fucking Slow";
             break;
         default:
-            document.getElementById('rangeDisplay').value=val;
+            document.getElementById('speedDisplay').value=val;
             break;
     }
 

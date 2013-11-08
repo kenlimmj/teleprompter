@@ -335,7 +335,10 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .menu-title {
-  margin-bottom: 0;
+  margin: 0;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-size: 1.618rem;
 }
 
 #spacer {

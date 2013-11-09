@@ -30,10 +30,10 @@ function pageScroll(speed) {
     popupWindow.scrollBy(0,1);
 
     // Calculate a scaling factor for the scroll to account for the different in size between the preview and prompting window
-    var scaleFactor = (popupWindow.document.body.offsetHeight) / (document.getElementById('promptPreviewWrapper').offsetHeight);
+    var scaleFactor = (document.getElementById('promptPreviewWrapper').offsetHeight) / (popupWindow.innerHeight);
 
     // Synchronize the scroll locations for both the prompting window and preview window
-    document.getElementById('promptPreviewWrapper').scrollTop = (popupWindow.document.body.scrollTop) / scaleFactor;
+    document.getElementById('promptPreviewWrapper').scrollTop = (popupWindow.document.body.scrollTop) * scaleFactor;
 
     // Delayed recursive call to keep scrolling till we hit the bottom
     scrolldelay = setTimeout(function() { pageScroll(speed);}, speed);

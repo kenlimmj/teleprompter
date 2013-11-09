@@ -11,36 +11,34 @@
     <body>
     <div class="control">
         <fieldset class="misolight">
-        <p class="text-center menu-title">Teleprompter Screen</p>
         <div id="promptPreviewWrapper">
             <div id="prompt" class="roboto" unselectable='on' onselectstart='return false;' onmousedown='return false;'></div>
         </div>
         </fieldset>
-
+        <hr>
         <fieldset class="misolight">
         <p class="text-center menu-title">Scrolling Speed</p>
         <input type="range" id="speedInput" name="speedInput" min="0" max="40" value="20" step="10" onchange="updateSpeedInput(this.value);">
         <input type="text" id="speedDisplay" disabled value="Standard">
         </fieldset>
-
+        <hr>
         <fieldset class="misolight">
         <p class="text-center menu-title">Text Width</p>
         <input type="range" id="widthInput" name="widthInput" min="50" max="100" value="70" step="10" onchange="updateWidthInput(this.value);">
         <input type="text" id="widthDisplay" disabled value="Standard">
         </fieldset>
-
+        <hr>
         <fieldset class="misolight">
-        <p class="text-center menu-title">Screen Flip Control</p>
-        <input type="radio" class="flipControl" name="flip" id="flipReset" checked="checked" onclick="flipReset();"><label for="flipReset"><img src="img/flipReset.svg"></label>
-        <input type="radio" class="flipControl" name="flip" id="flipHorz" onclick="flipHorz();"><label for="flipHorz"><img src="img/flipHorz.svg"></label>
-        <input type="radio" class="flipControl" name="flip" id="flipVert" onclick="flipVert();"><label for="flipVert"><img src="img/flipVert.svg"></label>
-        <input type="radio" class="flipControl" name="flip" id="flipMirror" onclick="flipMirror();"><label for="flipMirror"><img src="img/flipMirror.svg"></label>
+        <p class="text-center menu-title">Screen Orientation</p>
+        <input type="radio" class="flipControl" name="flip" id="flipReset" checked="checked" onclick="flipReset();"><label for="flipReset"><img src="img/flipReset.svg"><br/>Reset</label>
+        <input type="radio" class="flipControl" name="flip" id="flipHorz" onclick="flipHorz();"><label for="flipHorz"><img src="img/flipHorz.svg"><br/>Horizontal</label>
+        <input type="radio" class="flipControl" name="flip" id="flipVert" onclick="flipVert();"><label for="flipVert"><img src="img/flipVert.svg"><br/>Vertical</label>
+        <input type="radio" class="flipControl" name="flip" id="flipMirror" onclick="flipMirror();"><label for="flipMirror"><img src="img/flipMirror.svg"><br/>Mirror</label>
         </fieldset>
-
+        <hr>
         <fieldset class="buttons misolight">
-        <p><a href="#" onclick="teleprompter(this.href); return false;">Open Prompting Window</a></p>
-        <p><a href="#" onclick="startScroll(document.getElementById('speedInput').value);">Start Scrolling</a></p>
-        <p><a href="#" onclick="stopScroll();">Stop Scrolling</a></p>
+        <a href="#" onclick="teleprompter(this.href); return false;">Open Prompting Window</a>
+        <a href="#" onclick="startScroll(document.getElementById('speedInput').value);">Start Scrolling</a>
         </fieldset>
     </div>
     <div class="editor">
@@ -90,13 +88,14 @@
         function teleprompter(url){
             // Check if any popups are currently open and close them all.
             document.MyActiveWindows= new Array;
-            for(var i = 0;i < document.MyActiveWindows.length; i++)
-            document.MyActiveWindows[i].close()
+            for(var i = 0;i < document.MyActiveWindows.length; i++) {
+                document.MyActiveWindows[i].close();
+            }
 
             // Magic sauce to center the popup in the middle of the screen
             LeftPosition = (screen.width) ? (screen.width)/2 : 0;
             TopPosition = (screen.height) ? (screen.height)/2 : 0;
-            settings = 'height='+screen.height+',width='+screen.width+',top='+TopPosition+',left='+LeftPosition+',resizable=yes,toolbar=0,status=0,menubar=0,location=0';
+            settings = 'height='+screen.height+',width='+screen.width+',top='+TopPosition+',left='+LeftPosition+',resizable=yes,toolbar=0, status=0,menubar=0,location=0';
 
             // Make damn fucking sure all the LaTeX equations are typeset properly
             MathJax.Hub.Typeset();
@@ -124,6 +123,15 @@
             prompterWindow.close();
 
             updateWidthInput(document.getElementById('widthInput').value);
+
+            popupWindow.window.addEventListener("resize", function() {
+                var aspectRatio = (popupWindow.innerHeight * document.getElementsByClassName('control')[0].offsetWidth) / popupWindow.innerWidth;
+                document.getElementById('promptPreviewWrapper').style.height = aspectRatio + "px";
+
+                // Offset the top of the preview window by half the height of the box to match that of the prompter window
+                var startHeight = (document.getElementById('promptPreviewWrapper').offsetHeight)/2;
+                document.getElementById('promptPreviewWrapper').style.paddingTop = startHeight+"px";
+            });
         }
 
         // Clean-up after ourselves by closing the popup when the parent tab/window is closed

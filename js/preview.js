@@ -41,7 +41,7 @@ function promptWindow(input,preview) {
             preview.innerHTML = marked(input.value);
 
             // Call MathJax to typeset the LaTeX equations
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+            MathJax.Hub.Typeset();
 
             // Walk through the content and span-encapsulate everything. Rawr!
             walk(preview);

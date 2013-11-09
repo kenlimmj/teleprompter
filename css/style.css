@@ -194,11 +194,12 @@ fieldset {
 
 #promptPreviewWrapper {
   min-height: 10vh;
-  height: 20vh;
-  border: 2px solid #444;
+  height: 40vh;
   overflow: scroll;
-  resize: vertical;
-  font-size: 0.75rem;
+  resize: none;
+
+  margin-left: -1rem;
+  margin-right: -1rem;
 
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -253,6 +254,15 @@ a:hover {
 .buttons {
   font-size: 1.618rem;
   text-align: center;
+}
+
+.buttons > a {
+  background-color: #444;
+  display: block;
+  margin-left: -1rem;
+  margin-right: -1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 /* Classes to flip text in a number of ways. We use matrix transforms instead of scaleX/scaleY for speed
@@ -312,6 +322,38 @@ input[type="range"]::-webkit-slider-thumb {
   height: 1.618rem;
 }
 
+#speedInput:before {
+  content: "+";
+  font-size: 2rem;
+  font-family: MisoLight;
+}
+
+#speedInput:after {
+  content: "-";
+  font-size: 2rem;
+  font-family: MisoLight;
+}
+
+#widthInput:before {
+  content: "-";
+  font-size: 2rem;
+  font-family: MisoLight;
+}
+
+#widthInput:after {
+  content: "+";
+  font-size: 2rem;
+  font-family: MisoLight;
+}
+
+hr {
+  margin-left: -1rem;
+  margin-right: -1rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  border: solid thin #444;
+}
+
 #speedDisplay, #widthDisplay {
   outline: none;
   background: none;
@@ -323,6 +365,7 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 0;
 
   margin: 0;
+  margin-bottom: 0.5rem;
   width: 100%;
   font-family: inherit;
   font-size: 1rem;

@@ -27,4 +27,7 @@ function updateWidthInput(val) {
     popupWindow.document.getElementById('screen').style.width = val+"vw";
   }
   document.getElementById('prompt').style.width = val+"%";
+
+  // TODO: Synchronize the font-size on the popup window and preview window by getting to 60chars per line for both
 }
+

@@ -37,8 +37,10 @@
         </fieldset>
         <hr>
         <fieldset class="buttons misolight">
+        <a id="fullscreen" href="#">Full Screen Mode</a>
         <a href="#" onclick="teleprompter(this.href); return false;">Open Prompting Window</a>
-        <a href="#" onclick="startScroll(document.getElementById('speedInput').value);">Start Scrolling</a>
+        <a href="#" onclick="startScroll(document.getElementById('speedInput').value); return false;">Start Scrolling</a>
+        <a href="#" onclick="stopScroll(); return false;">Stop Scrolling</a>
         </fieldset>
     </div>
     <div class="editor">
@@ -68,6 +70,7 @@
     <script src="js/storage.js"></script>
     <script src="js/flip.js"></script>
     <script src="js/width.js"></script>
+    <script src="js/fullscreen.js"></script>
     <script>
         // Configuration options for the markdown parser
         marked.setOptions({

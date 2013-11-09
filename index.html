@@ -131,6 +131,10 @@
                 // Offset the top of the preview window by half the height of the box to match that of the prompter window
                 var startHeight = (document.getElementById('promptPreviewWrapper').offsetHeight)/2;
                 document.getElementById('promptPreviewWrapper').style.paddingTop = startHeight+"px";
+
+                // Adjust the font size
+                var fontAdjust = (parseFloat(popupWindow.getComputedStyle(popupWindow.document.getElementById('screen'),null).getPropertyValue('font-size')) / popupWindow.innerWidth) * document.getElementsByClassName('control')[0].offsetWidth;
+                document.getElementById('promptPreviewWrapper').style.fontSize = fontAdjust + "px";
             });
         }
 

@@ -223,6 +223,7 @@ a:hover {
 
 #prompt {
   margin: 0 auto;
+  line-height: 2;
 }
 
 #previewText {
